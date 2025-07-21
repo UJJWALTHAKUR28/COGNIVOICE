@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+motor
+passlib[bcrypt]
+python-jose
+pydantic[email]
+numpy
+librosa
+soundfile
+torch
+email-validator
+passlib 

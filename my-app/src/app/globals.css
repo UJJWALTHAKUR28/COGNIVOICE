@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Audio visualizer styles */
+.audio-visualizer {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  transition: all 0.1s ease-out;
+}
+
+/* Emotion color animations */
+.emotion-glow {
+  box-shadow: 0 0 20px currentColor;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px currentColor;
+  }
+  to {
+    box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
+  }
+}

@@ -1,0 +1,22 @@
+# Environment files
+.env
+.env.*
+*.env
+*.env.*
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# VSCode settings
+.vscode/
+
+# Model checkpoints and large files
+*.pth
+
+# Node app embedded Git repo
+my-app/.git
+
+# OS metadata
+.DS_Store
+Thumbs.db
