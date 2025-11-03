@@ -19,7 +19,7 @@ export default function VoiceEmotionDetection() {
   const animationRef = useRef<number | null>(null);
 
   // Backend API URL - adjust this to your FastAPI server
-  const API_URL = 'http://localhost:8000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";;
 
   // Clean up resources safely
   const cleanupResources = () => {
