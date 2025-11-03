@@ -6,12 +6,12 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   // On mount, check for token and fetch user
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://localhost:8000/api/me", {
+      fetch(`${API_URL}/api/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => (res.ok ? res.json() : null))
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
   const login = (token) => {
     localStorage.setItem("token", token);
     // Fetch user after login
-    fetch("http://localhost:8000/api/me", {
+    fetch(`${API_URL}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => (res.ok ? res.json() : null))
