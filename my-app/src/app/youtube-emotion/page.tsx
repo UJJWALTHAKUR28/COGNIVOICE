@@ -11,7 +11,7 @@ const YouTubeEmotionPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
   const [processingStage, setProcessingStage] = useState('');
-
+   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";;
   const getEmotionColor = (emotion: string) => {
     const colors = {
       'happy': '#FFD700',
@@ -56,7 +56,7 @@ const YouTubeEmotionPage = () => {
       setTimeout(() => setProcessingStage('Extracting audio...'), 1000);
       setTimeout(() => setProcessingStage('Analyzing emotion...'), 2500);
       
-      const res = await fetch('http://localhost:8000/predict-emotion-youtube', {
+      const res = await fetch(`${API_URL}/predict-emotion-youtube`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
