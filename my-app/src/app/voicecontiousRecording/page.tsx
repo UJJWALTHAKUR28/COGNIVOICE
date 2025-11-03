@@ -25,7 +25,7 @@ export default function VoiceEmotionDetection() {
   const shouldContinueRecordingRef = useRef(false);
 
   // Backend API URL
-  const API_URL = 'http://localhost:8000';
+  const API_URL =  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   // --- Core Functions ---
 
