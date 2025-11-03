@@ -22,7 +22,7 @@ const Page: React.FC = () => {
     try {
       const userData = { name: username, email, password };
 
-      const res = await fetch(`${API_URL}/api/api/signup`, {
+      const res = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
