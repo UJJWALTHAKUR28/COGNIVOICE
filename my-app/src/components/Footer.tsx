@@ -1,21 +1,18 @@
 "use client";
 
-import React from 'react';
-import { FaGithub, FaTwitter, FaLinkedin, FaHeart, FaMicrophone } from 'react-icons/fa';
-import { GiSoundWaves } from 'react-icons/gi';
-import { BiCopyright } from 'react-icons/bi';
-import Link from 'next/link';
+import React from "react";
+import { FaGithub, FaTwitter, FaLinkedin, FaHeart, FaMicrophone } from "react-icons/fa";
+import { GiSoundWaves } from "react-icons/gi";
+import { BiCopyright } from "react-icons/bi";
+import Link from "next/link";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="mt-auto bg-white border-t border-teal-400 overflow-hidden relative w-full">
-      
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          
           {/* Brand Section */}
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
@@ -30,7 +27,7 @@ const Footer = () => {
               </h3>
             </div>
             <p className="text-teal-700/80 text-sm leading-relaxed mb-4">
-              Advanced voice emotion detection powered by AI. Experience real-time emotional intelligence 
+              Advanced voice emotion detection powered by AI. Experience real-time emotional intelligence
               through cutting-edge audio analysis and machine learning algorithms.
             </p>
             <div className="flex items-center text-teal-600/70 text-xs">
@@ -47,25 +44,31 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
+                <Link href="/" className="text-teal-600/80 hover:text-teal-700 text-sm flex items-center">
                   <div className="w-1 h-1 bg-teal-400 rounded-full mr-2 opacity-60"></div>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/voice" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
+                <Link href="/voice" className="text-teal-600/80 hover:text-teal-700 text-sm flex items-center">
                   <FaMicrophone className="mr-2 text-xs text-teal-500" />
                   PulseTap
                 </Link>
               </li>
               <li>
-                <Link href="/voicecontiousRecording" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
+                <Link
+                  href="/voicecontiousRecording"
+                  className="text-teal-600/80 hover:text-teal-700 text-sm flex items-center"
+                >
                   <GiSoundWaves className="mr-2 text-xs text-teal-500" />
                   MoodStream
                 </Link>
               </li>
               <li>
-                <Link href="/youtube-emotion" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
+                <Link
+                  href="/youtube-emotion"
+                  className="text-teal-600/80 hover:text-teal-700 text-sm flex items-center"
+                >
                   <div className="w-1 h-1 bg-teal-400 rounded-full mr-2 opacity-60"></div>
                   YouTube VoiceScan
                 </Link>
@@ -79,30 +82,16 @@ const Footer = () => {
               Connect
             </h4>
             <div className="flex space-x-3">
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-teal-300 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="GitHub"
-              >
+              <a href="#" aria-label="GitHub" className="w-8 h-8 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-teal-300 transition-all duration-300 transform hover:scale-110 shadow-sm">
                 <FaGithub className="text-teal-700 text-sm" />
               </a>
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center hover:from-cyan-200 hover:to-cyan-300 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="Twitter"
-              >
+              <a href="#" aria-label="Twitter" className="w-8 h-8 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center hover:from-cyan-200 hover:to-cyan-300 transition-all duration-300 transform hover:scale-110 shadow-sm">
                 <FaTwitter className="text-cyan-700 text-sm" />
               </a>
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-cyan-200 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="LinkedIn"
-              >
+              <a href="#" aria-label="LinkedIn" className="w-8 h-8 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-cyan-200 transition-all duration-300 transform hover:scale-110 shadow-sm">
                 <FaLinkedin className="text-teal-700 text-sm" />
               </a>
             </div>
-            
-            {/* Live Status Indicator */}
             <div className="mt-4 flex items-center">
               <div className="relative">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -113,17 +102,13 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Divider */}
         <div className="mt-8 pt-6 border-t border-teal-900/60">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            
-            {/* Copyright */}
             <div className="flex items-center text-teal-600/60 text-xs mb-3 md:mb-0">
               <BiCopyright className="mr-1" />
               <span>{currentYear} Cognivoice. All rights reserved.</span>
             </div>
 
-            {/* Tech Stack Badge */}
             <div className="flex items-center space-x-2">
               <span className="text-xs font-bold text-teal-600/60">Powered by</span>
               <div className="px-2 py-1 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-full border border-teal-100">
@@ -135,26 +120,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
-      {/* Subtle gradient overlay */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-500 opacity-60"></div>
-      
-      {/* Floating elements animation */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </footer>
   );
 };
