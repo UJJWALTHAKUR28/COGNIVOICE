@@ -2,19 +2,17 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
 import useRequireAuth from "@/context/useRequireAuth";
 
 export default function VoiceEmotionDetection() {
   const user = useRequireAuth();
-  const router = useRouter();
 
   // ---------- STATE HOOKS ----------
   const [isRecording, setIsRecording] = useState(false);
   const [emotion, setEmotion] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [audioLevel, setAudioLevel] = useState(0);
+  // Removed unused audioLevel to fix ESLint error
 
   // ---------- REF HOOKS ----------
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -71,20 +69,6 @@ export default function VoiceEmotionDetection() {
     return stream;
   }, []);
 
-  // ---------- UPDATE AUDIO LEVEL ----------
-  const updateAudioLevel = useCallback(() => {
-    if (analyserRef.current) {
-      const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-      analyserRef.current.getByteFrequencyData(dataArray);
-      const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
-      setAudioLevel(avg);
-    }
-
-    if (isRecording) {
-      animationRef.current = requestAnimationFrame(updateAudioLevel);
-    }
-  }, [isRecording]);
-
   // ---------- AUDIO PROCESSING ----------
   const processAudioForBackend = async (audioBlob: Blob): Promise<number[] | null> => {
     return new Promise((resolve) => {
@@ -106,7 +90,7 @@ export default function VoiceEmotionDetection() {
     });
   };
 
-  const sendAudioToBackend = async (audioArray: number[]): Promise<string> => {
+  const sendAudioToBackend = useCallback(async (audioArray: number[]): Promise<string> => {
     const res = await fetch(`${API_URL}/predict-emotion`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -117,7 +101,7 @@ export default function VoiceEmotionDetection() {
 
     const result: { emotion?: string; prediction?: string } = await res.json();
     return result.emotion || result.prediction || "unknown";
-  };
+  }, [API_URL]);
 
   // ---------- RECORDING ----------
   const stopRecording = useCallback(() => {
@@ -164,7 +148,6 @@ export default function VoiceEmotionDetection() {
 
       mediaRecorder.start();
       setIsRecording(true);
-      updateAudioLevel();
 
       // Auto stop after 3 seconds
       setTimeout(() => {
@@ -174,7 +157,7 @@ export default function VoiceEmotionDetection() {
       const message = err instanceof Error ? err.message : "Failed to start recording";
       setError(message);
     }
-  }, [initializeAudio, stopRecording, updateAudioLevel]);
+  }, [initializeAudio, stopRecording, sendAudioToBackend]);
 
   // ---------- EMOTION COLORS ----------
   const getEmotionColor = (emotionName: string): string => {
