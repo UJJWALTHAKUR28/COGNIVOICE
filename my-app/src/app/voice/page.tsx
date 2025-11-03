@@ -9,9 +9,6 @@ export default function VoiceEmotionDetection() {
   const user = useRequireAuth();
   const router = useRouter();
 
-  // Return early if authentication is not resolved yet
-  if (!user) return null;
-
   const [isRecording, setIsRecording] = useState(false);
   const [emotion, setEmotion] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -148,8 +145,9 @@ export default function VoiceEmotionDetection() {
           } else {
             setError("Audio processing failed");
           }
-        } catch (err: any) {
-          setError(err.message || "Prediction failed");
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Prediction failed";
+          setError(message);
         } finally {
           setIsProcessing(false);
         }
@@ -163,8 +161,9 @@ export default function VoiceEmotionDetection() {
       setTimeout(() => {
         if (mediaRecorder.state === "recording") stopRecording();
       }, 3000);
-    } catch (err: any) {
-      setError(err.message || "Failed to start recording");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to start recording";
+      setError(message);
     }
   }, [initializeAudio, stopRecording, updateAudioLevel]);
 
@@ -185,9 +184,14 @@ export default function VoiceEmotionDetection() {
   };
 
   /** ---------- CLEANUP ---------- **/
-  useEffect(() => cleanupResources, [cleanupResources]);
+  useEffect(() => {
+    return () => cleanupResources();
+  }, [cleanupResources]);
 
   /** ---------- RENDER ---------- **/
+
+  // Now return AFTER all hooks are called
+  if (!user) return null;
 
   return (
     <>
@@ -198,7 +202,6 @@ export default function VoiceEmotionDetection() {
       </Head>
 
       <div className="min-h-screen bg-white relative overflow-hidden">
-        {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-32 h-32 bg-teal-100 rounded-full mix-blend-multiply animate-pulse opacity-70"></div>
           <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-cyan-100 rounded-full mix-blend-multiply animate-ping opacity-70"></div>
@@ -241,9 +244,7 @@ export default function VoiceEmotionDetection() {
                 </div>
               )}
 
-              {error && (
-                <p className="text-red-500 mt-4 text-sm">{error}</p>
-              )}
+              {error && <p className="text-red-500 mt-4 text-sm">{error}</p>}
 
               <button
                 onClick={isRecording ? stopRecording : startRecording}
@@ -256,7 +257,11 @@ export default function VoiceEmotionDetection() {
                     : "bg-teal-500 hover:bg-teal-600"
                 }`}
               >
-                {isRecording ? "Stop Recording" : isProcessing ? "Processing..." : "Start Recording"}
+                {isRecording
+                  ? "Stop Recording"
+                  : isProcessing
+                  ? "Processing..."
+                  : "Start Recording"}
               </button>
             </div>
           </div>
