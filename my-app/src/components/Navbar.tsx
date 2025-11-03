@@ -76,12 +76,7 @@ const Navbar: React.FC = () => {
               <NavLink href="/signup" label="Signup" />
             </>
           )}
-          <button
-            onClick={toggleTheme}
-            className="ml-4 border px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-          >
-            {isDarkMode ? "Light Mode" : "Dark Mode"}
-          </button>
+         
         </div>
       </nav>
     </header>
