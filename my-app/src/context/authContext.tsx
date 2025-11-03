@@ -8,17 +8,16 @@ import React, {
   ReactNode,
 } from "react";
 
-// Define types
 interface User {
   id?: string;
   name?: string;
   email?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (token: string) => void;
+  login: (token: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -26,10 +25,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-  // Check token and fetch user
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -40,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
-          const data = await res.json();
+          const data: User = await res.json();
           setUser(data);
         } else {
           setUser(null);
@@ -51,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     fetchUser();
-  }, [API_URL]); // Added missing dependency
+  }, [API_URL]);
 
   const login = async (token: string) => {
     localStorage.setItem("token", token);
@@ -60,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
-        const data = await res.json();
+        const data: User = await res.json();
         setUser(data);
       } else {
         setUser(null);
