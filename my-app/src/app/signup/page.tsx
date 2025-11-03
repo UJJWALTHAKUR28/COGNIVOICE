@@ -1,7 +1,7 @@
 "use client";
 import {useRouter}  from "next/navigation";
 import React, { useState } from "react";
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const Page = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ const Page = () => {
       password: password,
       name: username
     };
-    const res =await fetch('http://localhost:8000/api/signup', {
+    const res =await fetch(`${API_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
