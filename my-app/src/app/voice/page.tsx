@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import useRequireAuth from "@/context/useRequireAuth";
+import { API_URL } from '@/config/api';
 export default function VoiceEmotionDetection() {
   const user = useRequireAuth();
   if (!user) return null;
@@ -18,8 +19,7 @@ export default function VoiceEmotionDetection() {
   const streamRef = useRef<MediaStream | null>(null);
   const animationRef = useRef<number | null>(null);
 
-  // Backend API URL - adjust this to your FastAPI server
-  const API_URL = 'http://localhost:8000';
+
 
   // Clean up resources safely
   const cleanupResources = () => {

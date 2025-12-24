@@ -2,6 +2,10 @@
 // context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+const API_URL = typeof window !== 'undefined' 
+  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+  : 'http://localhost:8000';
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -11,7 +15,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://localhost:8000/api/me", {
+      fetch(`${API_URL}/api/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => (res.ok ? res.json() : null))
@@ -23,7 +27,7 @@ export function AuthProvider({ children }) {
   const login = (token) => {
     localStorage.setItem("token", token);
     // Fetch user after login
-    fetch("http://localhost:8000/api/me", {
+    fetch(`${API_URL}/api/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => (res.ok ? res.json() : null))

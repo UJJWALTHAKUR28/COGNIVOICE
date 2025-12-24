@@ -1,12 +1,14 @@
 fastapi
-uvicorn
+uvicorn[standard]
 motor
 passlib[bcrypt]
-python-jose
+python-jose[cryptography]
 pydantic[email]
 numpy
 librosa
 soundfile
 torch
 email-validator
-passlib 
+yt-dlp
+python-multipart
+slowapi

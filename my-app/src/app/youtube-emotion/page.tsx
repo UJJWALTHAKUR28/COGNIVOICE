@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import useRequireAuth from "@/context/useRequireAuth";
+import { API_URL } from '@/config/api';
 
 const YouTubeEmotionPage = () => {
   const user = useRequireAuth();
@@ -56,7 +57,7 @@ const YouTubeEmotionPage = () => {
       setTimeout(() => setProcessingStage('Extracting audio...'), 1000);
       setTimeout(() => setProcessingStage('Analyzing emotion...'), 2500);
       
-      const res = await fetch('http://localhost:8000/predict-emotion-youtube', {
+      const res = await fetch(`${API_URL}/predict-emotion-youtube`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

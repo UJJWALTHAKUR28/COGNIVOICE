@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import useRequireAuth from "@/context/useRequireAuth";
+import { API_URL } from '@/config/api';
 
 export default function VoiceEmotionDetection() {
   const user = useRequireAuth();
@@ -24,8 +25,7 @@ export default function VoiceEmotionDetection() {
   const processingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const shouldContinueRecordingRef = useRef(false);
 
-  // Backend API URL
-  const API_URL = 'http://localhost:8000';
+
 
   // --- Core Functions ---
 

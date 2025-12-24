@@ -41,9 +41,16 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS middleware to allow requests from your Next.js frontend
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    frontend_url
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -311,7 +318,8 @@ async def predict_emotion_youtube(
                 'outtmpl': tmp.name.replace(".%(ext)s", ".%(ext)s"),
                 'quiet': True,
                 'no_warnings': True,
-                'ffmpeg_location': r'E:\ffmeg\ffmpeg-7.1.1-essentials_build\bin',
+                # FFmpeg is installed via nixpacks on Railway
+                # 'ffmpeg_location': r'E:\ffmeg\ffmpeg-7.1.1-essentials_build\bin',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'wav',
@@ -381,7 +389,8 @@ async def predict_emotion_youtube(
                     'outtmpl': tmp2_path,
                     'quiet': True,
                     'no_warnings': True,
-                    'ffmpeg_location': r'addyourpath',
+                    # FFmpeg is installed via nixpacks on Railway
+                    # 'ffmpeg_location': r'addyourpath',
                 }
                 
                 try:

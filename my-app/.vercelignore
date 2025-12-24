@@ -1,0 +1,14 @@
+# Ignore backend
+../backend/
+
+# Ignore docs
+*.md
+!README.md
+
+# Ignore local files
+.env.local
+.env
+
+# Ignore build cache
+.next/
+node_modules/

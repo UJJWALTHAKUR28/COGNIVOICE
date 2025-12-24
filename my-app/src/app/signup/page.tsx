@@ -1,6 +1,7 @@
 "use client";
 import {useRouter}  from "next/navigation";
 import React, { useState } from "react";
+import { API_URL } from '@/config/api';
 
 const Page = () => {
   const [username, setUsername] = useState('');
@@ -22,7 +23,7 @@ const Page = () => {
       password: password,
       name: username
     };
-    const res =await fetch('http://localhost:8000/api/signup', {
+    const res =await fetch(`${API_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,7 +1,8 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { useAuth } from '@/context/authContext'; // <-- Import AuthContext
+import { useAuth } from '@/context/authContext';
+import { API_URL } from '@/config/api';
 
 const Page = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Page = () => {
       return;
     }
     const userData = { email, password };
-    const res = await fetch("http://localhost:8000/api/login", {
+    const res = await fetch(`${API_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData),

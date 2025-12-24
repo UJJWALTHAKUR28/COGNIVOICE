@@ -3,6 +3,7 @@
 .env.*
 *.env
 *.env.*
+!.env.example
 
 # Python cache
 __pycache__/
@@ -11,12 +12,25 @@ __pycache__/
 # VSCode settings
 .vscode/
 
-# Model checkpoints and large files
-*.pth
-
 # Node app embedded Git repo
 my-app/.git
 
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Build outputs
+my-app/.next/
+my-app/out/
+backend/audio_files/
+
+# Dependencies
+node_modules/
+venv/
+env/
+
+DEPLOYMENT.md
+DEPLOYMENT_README.md
+DEPLOYMENT_CHECKLIST.md
+ENV_SETUP.md
+READY_TO_DEPLOY.md
