@@ -19,12 +19,10 @@ jobs:
         with:
           python-version: '3.10'
       
-      - name: Install Hugging Face Hub CLI
-        run: pip install --upgrade huggingface_hub
-
       - name: Push to Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          pip install --upgrade huggingface_hub
           # Upload the 'backend' folder contents to the root of the Space
-          huggingface-cli upload utwinner/cognivoice-backend ./backend . --repo-type space --token $HF_TOKEN
+          python -m huggingface_hub.cli upload utwinner/cognivoice-backend ./backend . --repo-type space --token $HF_TOKEN
