@@ -25,5 +25,5 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           pip install --upgrade huggingface_hub
-          # Upload the 'backend' folder contents to the root of the Space
-          python -m huggingface_hub.cli upload utwinner/cognivoice-backend ./backend . --repo-type space --token $HF_TOKEN
+          # Upload using Python API to avoid CLI path issues
+          python -c "from huggingface_hub import HfApi; import os; api = HfApi(); api.upload_folder(folder_path='./backend', repo_id='utwinner/cognivoice-backend', repo_type='space', path_in_repo='.', token=os.environ['HF_TOKEN'], commit_message='Sync backend from GitHub')"
