@@ -6,7 +6,7 @@ on:
       - 'backend/**'
 
 jobs:
-  build:
+  sync-to-hub:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,36 +14,12 @@ jobs:
           fetch-depth: 0
           lfs: true
       
-      - name: Push to hub
+      - name: Install Hugging Face Hub CLI
+        run: pip install --upgrade huggingface_hub
+
+      - name: Push to Hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git config --global user.email "utwinner@users.noreply.github.com"
-          git config --global user.name "utwinner"
-          
-          # Install git-xet (Required by HF for large files)
-          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/huggingface/xet-core/refs/heads/main/git_xet/install.sh | sh
-          source ~/.bashrc
-          git xet install
-          
-          # Initialize LFS (Backup)
-          git lfs install
-          
-          # Clone the HF Space
-          git clone https://utwinner:$HF_TOKEN@huggingface.co/spaces/utwinner/cognivoice-backend hf_space
-          
-          # Prepare the update
-          cd hf_space
-          # Remove all files except .git and .gitattributes to ensure clean sync
-          find . -maxdepth 1 ! -name '.git' ! -name '.gitattributes' ! -name '.' -exec rm -rf {} +
-          
-          # Copy backend files from parent repo
-          cp -r ../backend/* .
-          
-          # Ensure LFS tracks the model
-          git lfs track "*.pth"
-          
-          # Commit and Push
-          git add .
-          git commit -m "Sync from GitHub ${GITHUB_SHA}" || echo "No changes to commit"
-          git push origin main --force
+          # Upload the 'backend' folder contents to the root of the Space
+          huggingface-cli upload utwinner/cognivoice-backend ./backend . --repo-type space --token $HF_TOKEN
