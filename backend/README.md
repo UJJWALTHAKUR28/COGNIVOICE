@@ -1,3 +1,13 @@
+---
+title: Cognivoice Backend
+emoji: 🎤
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Voice Emotion Detection API Backend
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
