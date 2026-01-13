@@ -1,0 +1,22 @@
+name: Sync to Hugging Face hub
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: Push to hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "utwinner@users.noreply.github.com"
+          git config --global user.name "utwinner"
+          git push https://utwinner:$HF_TOKEN@huggingface.co/spaces/utwinner/cognivoice-backend `git subtree split --prefix backend main`:main --force
