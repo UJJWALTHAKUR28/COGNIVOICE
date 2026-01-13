@@ -22,7 +22,7 @@ wheels/
 .env
 .env.local
 .env.*.local
-improved_emotion_recognition_model.pth
+
 audio_files/
 .DS_Store
 .vscode/

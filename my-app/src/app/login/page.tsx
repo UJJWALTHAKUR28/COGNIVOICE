@@ -8,7 +8,7 @@ const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const { login } = useAuth(); // <-- Use context
+  const { login } = useAuth();
 
   const handlelogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -28,35 +28,52 @@ const Page = () => {
     } else {
       const data = await res.json();
       console.log("Login successful:", data);
-      login(data.access_token); // <-- Use context login
-      router.push('/'); // Redirect to home page after successful login
+      login(data.access_token);
+      router.push('/');
     }
     setEmail('');
     setPassword('');
   };
 
   return (
-    <div className='flex justify-center items-start pt-24 bg-white overflow-x-hidden h-[600px]'>
-      <div className='w-full max-w-md border-3 border-teal-600 p-8 rounded-lg shadow-md text-center'>
-        <h2 className='text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-900 via-teal-500 to-teal-700'>Login</h2>
-        <form className='space-y-4' onSubmit={handlelogin}>
-          <div className='text-left'>
-            <label className='block mb-1 text-xl font-medium text-gray-700'>Email</label>
-            <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500' required />
+    <div className='min-h-screen flex justify-center items-start pt-24 bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-950 dark:to-slate-900 transition-colors duration-300'>
+      <div className='w-full max-w-md bg-white dark:bg-slate-900 border border-teal-200 dark:border-slate-700 p-8 rounded-2xl shadow-xl'>
+        <h2 className='text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 dark:from-teal-400 dark:to-cyan-400 mb-6 text-center'>Login</h2>
+        <form className='space-y-5' onSubmit={handlelogin}>
+          <div>
+            <label className='block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300'>Email</label>
+            <input
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors'
+              required
+            />
           </div>
-          <div className='text-left'>
-            <label className='block mb-1 text-xl font-medium text-gray-700'>Password</label>
-            <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} className='w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500' required />
+          <div>
+            <label className='block mb-2 text-sm font-medium text-slate-700 dark:text-slate-300'>Password</label>
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors'
+              required
+            />
           </div>
-          <button type='submit' className='w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition duration-200'>Login</button>
+          <button
+            type='submit'
+            className='w-full bg-gradient-to-r from-teal-600 to-cyan-600 text-white py-3 rounded-xl font-semibold hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl'
+          >
+            Login
+          </button>
         </form>
 
-        <div className="mt-6 text-gray-600">
-          Don't have an account?
-          <a href="/signup" className="text-teal-500 hover:underline">
-            Signup here
+        <div className="mt-6 text-center text-slate-600 dark:text-slate-400 text-sm">
+          Don&apos;t have an account?{' '}
+          <a href="/signup" className="text-teal-600 dark:text-teal-400 hover:underline font-medium">
+            Sign up here
           </a>
-          </div>
+        </div>
       </div>
     </div>
   );

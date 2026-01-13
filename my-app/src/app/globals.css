@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 
+@variant dark (&:where(.dark, .dark *));
 
 html,
 body {
@@ -25,9 +26,12 @@ a {
 
 /* Custom animations */
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: .5;
   }
@@ -53,6 +57,7 @@ a {
   from {
     box-shadow: 0 0 20px currentColor;
   }
+
   to {
     box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
   }

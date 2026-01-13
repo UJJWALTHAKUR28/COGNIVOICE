@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { FaGithub, FaTwitter, FaLinkedin, FaHeart, FaMicrophone } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import { GiSoundWaves } from 'react-icons/gi';
 import { BiCopyright } from 'react-icons/bi';
 import Link from 'next/link';
@@ -10,63 +10,53 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto bg-white border-t border-teal-400 overflow-hidden relative w-full">
-      
+    <footer className="mt-auto bg-slate-950 border-t border-slate-800 text-slate-300 overflow-hidden relative w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          
           {/* Brand Section */}
-          <div className="md:col-span-2">
-            <div className="flex items-center mb-4">
-              <div className="relative">
-                <GiSoundWaves className="text-3xl text-teal-600 animate-pulse" />
-                <div className="absolute inset-0 text-3xl text-teal-400 animate-ping opacity-20">
-                  <GiSoundWaves />
-                </div>
+          <div className="md:col-span-2 space-y-4">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
+                <GiSoundWaves className="text-xl text-white" />
               </div>
-              <h3 className="ml-3 text-2xl font-bold bg-gradient-to-r from-teal-900 via-teal-600 to-teal-800 bg-clip-text text-transparent font-mono">
+              <h3 className="ml-3 text-2xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent font-sans tracking-tight">
                 Cognivoice
               </h3>
             </div>
-            <p className="text-teal-700/80 text-sm leading-relaxed mb-4">
-              Advanced voice emotion detection powered by AI. Experience real-time emotional intelligence 
-              through cutting-edge audio analysis and machine learning algorithms.
+            <p className="text-slate-400 text-sm leading-relaxed max-w-md">
+              Pioneering the future of emotional intelligence through advanced voice analysis.
+              Our AI-powered platform decodes human sentiment in real-time alongside you.
             </p>
-            <div className="flex items-center text-teal-600/70 text-xs">
-              <span>Made with</span>
-              <FaHeart className="mx-2 text-red-400 animate-pulse" />
-              <span>for emotional AI innovation</span>
-            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-teal-800 font-semibold mb-4 text-sm tracking-wide uppercase">
-              Quick Links
+            <h4 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase border-b border-teal-500/30 pb-2 inline-block">
+              Platform
             </h4>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
-                  <div className="w-1 h-1 bg-teal-400 rounded-full mr-2 opacity-60"></div>
+                <Link href="/" className="group flex items-center text-slate-400 hover:text-teal-400 transition-colors text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500/50 mr-2 group-hover:bg-teal-400 transition-colors"></span>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/voice" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
-                  <FaMicrophone className="mr-2 text-xs text-teal-500" />
-                  PulseTap
+                <Link href="/voice" className="group flex items-center text-slate-400 hover:text-teal-400 transition-colors text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500/50 mr-2 group-hover:bg-teal-400 transition-colors"></span>
+                  PulseTap Detection
                 </Link>
               </li>
               <li>
-                <Link href="/voicecontiousRecording" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
-                  <GiSoundWaves className="mr-2 text-xs text-teal-500" />
+                <Link href="/voicecontiousRecording" className="group flex items-center text-slate-400 hover:text-teal-400 transition-colors text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500/50 mr-2 group-hover:bg-teal-400 transition-colors"></span>
                   MoodStream
                 </Link>
               </li>
               <li>
-                <Link href="/youtube-emotion" className="text-teal-600/80 hover:text-teal-700 text-sm transition-colors duration-200 flex items-center">
-                  <div className="w-1 h-1 bg-teal-400 rounded-full mr-2 opacity-60"></div>
+                <Link href="/youtube-emotion" className="group flex items-center text-slate-400 hover:text-teal-400 transition-colors text-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500/50 mr-2 group-hover:bg-teal-400 transition-colors"></span>
                   YouTube VoiceScan
                 </Link>
               </li>
@@ -75,86 +65,42 @@ const Footer = () => {
 
           {/* Connect Section */}
           <div>
-            <h4 className="text-teal-800 font-semibold mb-4 text-sm tracking-wide uppercase">
+            <h4 className="text-white font-semibold mb-6 text-sm tracking-wider uppercase border-b border-cyan-500/30 pb-2 inline-block">
               Connect
             </h4>
-            <div className="flex space-x-3">
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-teal-300 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="GitHub"
-              >
-                <FaGithub className="text-teal-700 text-sm" />
-              </a>
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center hover:from-cyan-200 hover:to-cyan-300 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="Twitter"
-              >
-                <FaTwitter className="text-cyan-700 text-sm" />
-              </a>
-              <a 
-                href="#" 
-                className="w-8 h-8 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-full flex items-center justify-center hover:from-teal-200 hover:to-cyan-200 transition-all duration-300 transform hover:scale-110 shadow-sm"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="text-teal-700 text-sm" />
-              </a>
-            </div>
-            
-            {/* Live Status Indicator */}
-            <div className="mt-4 flex items-center">
-              <div className="relative">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <div className="absolute inset-0 w-2 h-2 bg-green-300 rounded-full animate-ping opacity-50"></div>
-              </div>
-              <span className="ml-2 text-xs text-teal-600/70">Services Online</span>
+            <div className="flex gap-4">
+              {[
+                { icon: FaGithub, label: 'GitHub', href: 'https://github.com/UJJWALTHAKUR28/COGNIVOICE' },
+
+              ].map((social, idx) => (
+                <a
+                  key={idx}
+                  href={social.href}
+                  className="w-10 h-10 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:border-teal-500 hover:bg-teal-500/10 transition-all duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon size={16} />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="mt-8 pt-6 border-t border-teal-900/60">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            
-            {/* Copyright */}
-            <div className="flex items-center text-teal-600/60 text-xs mb-3 md:mb-0">
-              <BiCopyright className="mr-1" />
-              <span>{currentYear} Cognivoice. All rights reserved.</span>
-            </div>
+        {/* Footer Bottom */}
+        <div className="mt-16 pt-8 border-t border-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-slate-500 text-xs flex items-center">
+            <BiCopyright className="mr-1" />
+            {currentYear} Cognivoice. All rights reserved.
+          </div>
 
-            {/* Tech Stack Badge */}
-            <div className="flex items-center space-x-2">
-              <span className="text-xs font-bold text-teal-600/60">Powered by</span>
-              <div className="px-2 py-1 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-full border border-teal-100">
-                <span className="text-xs font-medium bg-gradient-to-r from-teal-700 to-cyan-700 bg-clip-text text-transparent">
-                  AI • Next.js • React
-                </span>
-              </div>
-            </div>
+          <div className="flex items-center text-xs text-slate-500 font-medium">
+            <span>Powered by </span>
+            <span className="text-teal-400 mx-1">Next.js</span>
+            <span>&</span>
+            <span className="text-cyan-400 ml-1">AI</span>
           </div>
         </div>
       </div>
-
-      {/* Subtle gradient overlay */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-400 via-cyan-400 to-teal-500 opacity-60"></div>
-      
-      {/* Floating elements animation */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </footer>
   );
 };

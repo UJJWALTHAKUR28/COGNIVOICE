@@ -1,18 +1,15 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/navigation';
 import useRequireAuth from "@/context/useRequireAuth";
 import { API_URL } from '@/config/api';
 export default function VoiceEmotionDetection() {
   const user = useRequireAuth();
-  if (!user) return null;
   const [isRecording, setIsRecording] = useState(false);
   const [emotion, setEmotion] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
   const [audioLevel, setAudioLevel] = useState(0);
-  const router = useRouter();
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -48,13 +45,13 @@ export default function VoiceEmotionDetection() {
   // Initialize audio context and analyzer for visual feedback
   const initializeAudio = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
+      const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           sampleRate: 22050, // Match your model's sample rate
           channelCount: 1,
           echoCancellation: true,
           noiseSuppression: true
-        } 
+        }
       });
 
       streamRef.current = stream;
@@ -69,7 +66,7 @@ export default function VoiceEmotionDetection() {
       }
 
       return stream;
-    } catch (err) {
+    } catch {
       throw new Error('Microphone access denied or not available');
     }
   };
@@ -109,12 +106,12 @@ export default function VoiceEmotionDetection() {
 
           // Convert to the format your backend expects
           const audioArray = Array.from(audioData);
-          
+
           // Close this temporary audio context
           if (audioContext.state !== 'closed') {
             audioContext.close();
           }
-          
+
           resolve(audioArray);
         } catch (error) {
           console.error('Error processing audio:', error);
@@ -209,7 +206,7 @@ export default function VoiceEmotionDetection() {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      
+
       // Clean up resources after stopping
       cleanupResources();
     }
@@ -239,6 +236,9 @@ export default function VoiceEmotionDetection() {
     };
   }, []);
 
+
+  if (!user) return null;
+
   return (
     <>
       <Head>
@@ -247,149 +247,148 @@ export default function VoiceEmotionDetection() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-r from-teal-100 to-teal-200 rounded-full mix-blend-multiply animate-pulse opacity-70"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-cyan-100 to-cyan-200 rounded-full mix-blend-multiply animate-bounce opacity-70"></div>
-        <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-gradient-to-r from-teal-200 to-teal-300 rounded-full mix-blend-multiply animate-ping opacity-70"></div>
-        <div className="absolute bottom-40 right-1/3 w-20 h-20 bg-gradient-to-r from-cyan-200 to-cyan-300 rounded-full mix-blend-multiply animate-pulse opacity-70"></div>
-      </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-950 dark:to-slate-900 relative overflow-hidden transition-colors duration-300">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-r from-teal-100 to-teal-200 dark:from-teal-900/30 dark:to-teal-800/30 rounded-full mix-blend-multiply dark:mix-blend-normal animate-pulse opacity-70"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-cyan-100 to-cyan-200 rounded-full mix-blend-multiply animate-bounce opacity-70"></div>
+          <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-gradient-to-r from-teal-200 to-teal-300 rounded-full mix-blend-multiply animate-ping opacity-70"></div>
+          <div className="absolute bottom-40 right-1/3 w-20 h-20 bg-gradient-to-r from-cyan-200 to-cyan-300 rounded-full mix-blend-multiply animate-pulse opacity-70"></div>
+        </div>
 
-      <div className="relative z-10 flex items-center justify-center h-[660px] p-4">
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl h-[650px] p-8 max-w-md w-full shadow-2xl border border-teal-100 relative overflow-hidden">
-          {/* Card Shimmer Effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full animate-shimmer"></div>
-          
-          <div className="text-center relative z-10">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent mb-2 tracking-tight">
-                Voice Emotion
-              </h1>
-              <h2 className="text-xl text-teal-600/80 font-medium tracking-wide">Detection</h2>
-            </div>
+        <div className="relative z-10 flex items-center justify-center h-[660px] p-4">
+          <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl h-[650px] p-8 max-w-md w-full shadow-2xl border border-teal-100 dark:border-slate-700 relative overflow-hidden">
+            {/* Card Shimmer Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full animate-shimmer"></div>
 
-            {/* Enhanced Audio Level Visualizer */}
-            <div className="mb-8 flex justify-center">
-              <div className="relative">
-                {/* Outer rotating ring */}
-                <div className="absolute inset-0 w-40 h-40 border-2 border-teal-200 rounded-full animate-spin"></div>
-                
-                {/* Main visualizer container */}
-                <div className="w-40 h-40 rounded-full border-4 border-teal-300/50 flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-50 to-cyan-50 shadow-lg">
-                  
-                  {/* Audio level visualization */}
-                  <div 
-                    className="absolute inset-0 bg-gradient-to-t from-teal-400 to-cyan-400 transition-all duration-100 opacity-80"
-                    style={{ 
-                      transform: `translateY(${100 - (audioLevel / 255) * 100}%)`,
-                      opacity: isRecording ? 0.8 : 0.2
-                    }}
-                  />
-                  
-                  {/* Center indicator */}
-                  <div className="relative z-10 flex items-center justify-center">
-                    {isRecording ? (
-                      <div className="relative">
-                        <div className="w-8 h-8 bg-red-500 rounded-full animate-pulse shadow-lg"></div>
-                        <div className="absolute inset-0 w-8 h-8 bg-red-400 rounded-full animate-ping"></div>
-                      </div>
-                    ) : isProcessing ? (
-                      <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                      <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full shadow-lg flex items-center justify-center">
-                        <div className="w-4 h-4 bg-white rounded-full animate-pulse"></div>
-                      </div>
+            <div className="text-center relative z-10">
+              {/* Header */}
+              <div className="mb-8">
+                <h1 className="text-5xl font-bold bg-gradient-to-r from-teal-600 to-teal-800 dark:from-teal-400 dark:to-cyan-400 bg-clip-text text-transparent mb-2 tracking-tight">
+                  Voice Emotion
+                </h1>
+                <h2 className="text-xl text-teal-600/80 dark:text-teal-400/80 font-medium tracking-wide">Detection</h2>
+              </div>
+
+              {/* Enhanced Audio Level Visualizer */}
+              <div className="mb-8 flex justify-center">
+                <div className="relative">
+                  {/* Outer rotating ring */}
+                  <div className="absolute inset-0 w-40 h-40 border-2 border-teal-200 rounded-full animate-spin"></div>
+
+                  {/* Main visualizer container */}
+                  <div className="w-40 h-40 rounded-full border-4 border-teal-300/50 dark:border-teal-600/50 flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/50 dark:to-cyan-900/50 shadow-lg">
+
+                    {/* Audio level visualization */}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-teal-400 to-cyan-400 transition-all duration-100 opacity-80"
+                      style={{
+                        transform: `translateY(${100 - (audioLevel / 255) * 100}%)`,
+                        opacity: isRecording ? 0.8 : 0.2
+                      }}
+                    />
+
+                    {/* Center indicator */}
+                    <div className="relative z-10 flex items-center justify-center">
+                      {isRecording ? (
+                        <div className="relative">
+                          <div className="w-8 h-8 bg-red-500 rounded-full animate-pulse shadow-lg"></div>
+                          <div className="absolute inset-0 w-8 h-8 bg-red-400 rounded-full animate-ping"></div>
+                        </div>
+                      ) : isProcessing ? (
+                        <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-400 rounded-full shadow-lg flex items-center justify-center">
+                          <div className="w-4 h-4 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Ripple effect when recording */}
+                    {isRecording && (
+                      <>
+                        <div className="absolute inset-0 border-4 border-teal-400 rounded-full animate-ping opacity-20"></div>
+                        <div className="absolute inset-2 border-2 border-cyan-400 rounded-full animate-ping opacity-30 animation-delay-300"></div>
+                      </>
                     )}
                   </div>
-
-                  {/* Ripple effect when recording */}
-                  {isRecording && (
-                    <>
-                      <div className="absolute inset-0 border-4 border-teal-400 rounded-full animate-ping opacity-20"></div>
-                      <div className="absolute inset-2 border-2 border-cyan-400 rounded-full animate-ping opacity-30 animation-delay-300"></div>
-                    </>
-                  )}
                 </div>
               </div>
-            </div>
 
-            {/* Enhanced Current Emotion Display */}
-            {emotion && (
-              <div className="mb-6 p-6 bg-gradient-to-br from-teal-50/80 to-cyan-50/80 rounded-2xl border border-teal-100 backdrop-blur-sm shadow-lg transform transition-all duration-500 hover:scale-105">
-                <p className="text-teal-600/80 text-sm mb-2 font-medium tracking-wide">Detected Emotion:</p>
-                <p 
-                  className="text-3xl font-bold capitalize tracking-wide drop-shadow-sm"
-                  style={{ color: getEmotionColor(emotion) }}
-                >
-                  {emotion}
-                </p>
-                <div className="mt-2 h-1 bg-teal-100 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all duration-1000 ease-out"
-                    style={{ 
-                      background: `linear-gradient(90deg, ${getEmotionColor(emotion)}, ${getEmotionColor(emotion)}80)`,
-                      width: '100%'
-                    }}
-                  ></div>
+              {/* Enhanced Current Emotion Display */}
+              {emotion && (
+                <div className="mb-6 p-6 bg-gradient-to-br from-teal-50/80 to-cyan-50/80 dark:from-teal-900/50 dark:to-cyan-900/50 rounded-2xl border border-teal-100 dark:border-teal-700 backdrop-blur-sm shadow-lg transform transition-all duration-500 hover:scale-105">
+                  <p className="text-teal-600/80 dark:text-teal-400/80 text-sm mb-2 font-medium tracking-wide">Detected Emotion:</p>
+                  <p
+                    className="text-3xl font-bold capitalize tracking-wide drop-shadow-sm"
+                    style={{ color: getEmotionColor(emotion) }}
+                  >
+                    {emotion}
+                  </p>
+                  <div className="mt-2 h-1 bg-teal-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-1000 ease-out"
+                      style={{
+                        background: `linear-gradient(90deg, ${getEmotionColor(emotion)}, ${getEmotionColor(emotion)}80)`,
+                        width: '100%'
+                      }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Enhanced Status Messages */}
-            {isProcessing && (
-              <div className="mb-4 p-4 bg-gradient-to-r from-teal-100/80 to-cyan-100/80 rounded-xl border border-teal-200 backdrop-blur-sm animate-pulse">
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-4 h-4 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-                  <p className="text-teal-700 text-sm font-medium">Processing audio...</p>
+              {/* Enhanced Status Messages */}
+              {isProcessing && (
+                <div className="mb-4 p-4 bg-gradient-to-r from-teal-100/80 to-cyan-100/80 rounded-xl border border-teal-200 backdrop-blur-sm animate-pulse">
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-4 h-4 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-teal-700 text-sm font-medium">Processing audio...</p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {error && (
-              <div className="mb-4 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200 backdrop-blur-sm">
-                <p className="text-red-600 text-sm font-medium">{error}</p>
-              </div>
-            )}
+              {error && (
+                <div className="mb-4 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200 backdrop-blur-sm">
+                  <p className="text-red-600 text-sm font-medium">{error}</p>
+                </div>
+              )}
 
-            {/* Enhanced Recording Button */}
-            <button
-              onClick={isRecording ? stopRecording : startRecording}
-              disabled={isProcessing}
-              className={`w-full py-4 px-6 rounded-2xl font-semibold text-white transition-all duration-300 relative overflow-hidden shadow-lg transform hover:scale-105 active:scale-95 ${
-                isRecording
+              {/* Enhanced Recording Button */}
+              <button
+                onClick={isRecording ? stopRecording : startRecording}
+                disabled={isProcessing}
+                className={`w-full py-4 px-6 rounded-2xl font-semibold text-white transition-all duration-300 relative overflow-hidden shadow-lg transform hover:scale-105 active:scale-95 ${isRecording
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 animate-pulse shadow-red-200'
                   : isProcessing
-                  ? 'bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 shadow-teal-200'
-              }`}
-            >
-              {/* Button shimmer effect */}
-              {!isProcessing && (
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-700"></div>
-              )}
-              
-              <span className="relative z-10">
-                {isRecording ? 'Stop Recording' : isProcessing ? 'Processing...' : ' Start Recording'}
-              </span>
-            </button>
+                    ? 'bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 shadow-teal-200'
+                  }`}
+              >
+                {/* Button shimmer effect */}
+                {!isProcessing && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-700"></div>
+                )}
 
-            {/* Enhanced Instructions */}
-            <div className="mt-6 text-teal-600/70 text-sm space-y-1">
-              <p className="font-medium">Click to record 3 seconds of audio</p>
-              <p>for emotion detection</p>
-              <div className="flex justify-center gap-2 mt-3">
-                <div className="w-2 h-2 bg-teal-300 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse animation-delay-100"></div>
-                <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse animation-delay-200"></div>
+                <span className="relative z-10">
+                  {isRecording ? 'Stop Recording' : isProcessing ? 'Processing...' : ' Start Recording'}
+                </span>
+              </button>
+
+              {/* Enhanced Instructions */}
+              <div className="mt-6 text-teal-600/70 dark:text-teal-400/70 text-sm space-y-1">
+                <p className="font-medium">Click to record 3 seconds of audio</p>
+                <p>for emotion detection</p>
+                <div className="flex justify-center gap-2 mt-3">
+                  <div className="w-2 h-2 bg-teal-300 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse animation-delay-100"></div>
+                  <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse animation-delay-200"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <style jsx>{`
+        <style jsx>{`
         @keyframes shimmer {
           0% {
             transform: translateX(-100%) skewX(-12deg);
@@ -411,7 +410,7 @@ export default function VoiceEmotionDetection() {
           animation-delay: 0.3s;
         }
       `}</style>
-    </div>
+      </div>
     </>
   );
 }
