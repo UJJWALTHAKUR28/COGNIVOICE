@@ -12,3 +12,4 @@ email-validator
 yt-dlp
 python-multipart
 slowapi
+python-dotenv

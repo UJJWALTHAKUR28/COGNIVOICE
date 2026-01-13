@@ -95,7 +95,9 @@ TARGET_LENGTH = SAMPLE_RATE * DURATION
 # === Model + Label Encoder Loading ===
 try:
     model_path = os.path.join(os.path.dirname(__file__), "improved_emotion_recognition_model.pth")
-    checkpoint = torch.load(model_path, map_location=torch.device("cpu"))
+    # weights_only=False needed because we load label_encoder (sklearn object)
+    # This is safe since we control the model file source
+    checkpoint = torch.load(model_path, map_location=torch.device("cpu"), weights_only=False)
     model = EmotionCNN(num_classes=8, use_se=True)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()

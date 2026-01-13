@@ -1,35 +1,35 @@
 # app.py
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, EmailStr
 import numpy as np
 from typing import List, Optional
 import logging
-from fastapi import UploadFile, File
 import tempfile
 import soundfile as sf
 import librosa
 import traceback
 import time
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
+import re
+import html
+import uuid
+from datetime import datetime, timedelta, timezone
+from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+import yt_dlp
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+# Local imports
 from core.schemas.audio import AudioClipCreate, AudioClipInDB, YouTubeAudioRequest
-# Import your inference module
-from improved_inference import predict_emotion_improved
 from core.schemas.user import UserCreate, UserLogin, UserInDB
 from core.security import hash_password, verify_password, create_access_token, decode_access_token
 from core.db.mongo import audio_clips_collection
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-from fastapi import FastAPI
 from core.routes.user import get_current_user, router as user_router
-import yt_dlp
-import uuid
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from fastapi import Request
-from slowapi.errors import RateLimitExceeded
+from improved_inference import predict_emotion_improved
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -288,13 +288,7 @@ async def test_prediction():
         logger.error(f"Test prediction failed: {str(e)}")
         return {"error": str(e), "status": "failed"}
 
-import re
-import html
-
 YOUTUBE_URL_REGEX = r"(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+"
-
-
-# Updated YouTube audio processing endpoint with better error handling
 
 @app.post("/predict-emotion-youtube", response_model=EmotionResponse)
 @limiter.limit("8/minute")
@@ -312,20 +306,17 @@ async def predict_emotion_youtube(
         with tempfile.NamedTemporaryFile(suffix=".%(ext)s", delete=False) as tmp:
             tmp_path = tmp.name.replace(".%(ext)s", ".wav")
             
-            # Updated yt-dlp options with better audio extraction
+            # yt-dlp options for audio extraction
             ydl_opts = {
                 'format': 'bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio/best',
                 'outtmpl': tmp.name.replace(".%(ext)s", ".%(ext)s"),
                 'quiet': True,
                 'no_warnings': True,
-                # FFmpeg is installed via nixpacks on Railway
-                # 'ffmpeg_location': r'E:\ffmeg\ffmpeg-7.1.1-essentials_build\bin',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'wav',
-                    'preferredquality': '22050',  # Match your target sample rate
+                    'preferredquality': '22050',
                 }],
-                # Additional options for better compatibility
                 'extractaudio': True,
                 'audioformat': 'wav',
                 'audioquality': 0,
@@ -389,8 +380,6 @@ async def predict_emotion_youtube(
                     'outtmpl': tmp2_path,
                     'quiet': True,
                     'no_warnings': True,
-                    # FFmpeg is installed via nixpacks on Railway
-                    # 'ffmpeg_location': r'addyourpath',
                 }
                 
                 try:
@@ -406,8 +395,8 @@ async def predict_emotion_youtube(
                             # Clean up this temp file too
                             try:
                                 os.remove(test_path)
-                            except:
-                                pass
+                            except OSError as cleanup_err:
+                                logger.warning(f"Failed to cleanup temp file {test_path}: {cleanup_err}")
                             break
                             
                 except Exception as e:
@@ -444,7 +433,7 @@ async def predict_emotion_youtube(
             "emotion": predicted_emotion,
             "timestamp": time.time(),
             "notes": html.escape(body.notes) if body.notes else None,
-            "created_at": datetime.utcnow(),
+            "created_at": datetime.now(timezone.utc),
             "youtube_url": body.youtube_url
         }
         result = await audio_clips_collection.insert_one(audio_doc)
@@ -503,8 +492,8 @@ async def save_audio(request: AudioClipCreate, current_user: dict = Depends(get_
         "audio_data": request.audio_data,  # Store path instead of raw data
         "emotion": emotion,
         "timestamp": request.timestamp or time.time(),
-        "notes":html.escape(request.notes) if request.notes else None,
-        "created_at": datetime.utcnow()
+        "notes": html.escape(request.notes) if request.notes else None,
+        "created_at": datetime.now(timezone.utc)
     }
     result = await audio_clips_collection.insert_one(audio_doc)
     return {"msg": "Audio saved", "audio_id": str(result.inserted_id), "emotion": emotion}
