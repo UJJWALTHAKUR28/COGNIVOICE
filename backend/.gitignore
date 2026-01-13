@@ -1,29 +1,18 @@
-# Backend .gitignore
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+
+# Environment variables
 .env
 .env.local
-.env.*.local
+.env.*
+!.env.example
 
-audio_files/
-.DS_Store
+# IDEs
 .vscode/
 .idea/
+
+# Local data
+audio_files/
+chroma_db/
